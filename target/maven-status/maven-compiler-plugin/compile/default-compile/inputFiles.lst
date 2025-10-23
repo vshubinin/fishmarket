@@ -1,0 +1,13 @@
+/Users/volodymyr/Downloads/technical_task-main/src/main/java/technikal/task/fishmarket/FishmarketApplication.java
+/Users/volodymyr/Downloads/technical_task-main/src/main/java/technikal/task/fishmarket/controllers/FishController.java
+/Users/volodymyr/Downloads/technical_task-main/src/main/java/technikal/task/fishmarket/controllers/ProductController.java
+/Users/volodymyr/Downloads/technical_task-main/src/main/java/technikal/task/fishmarket/models/Fish.java
+/Users/volodymyr/Downloads/technical_task-main/src/main/java/technikal/task/fishmarket/models/FishDto.java
+/Users/volodymyr/Downloads/technical_task-main/src/main/java/technikal/task/fishmarket/models/FishImage.java
+/Users/volodymyr/Downloads/technical_task-main/src/main/java/technikal/task/fishmarket/models/Product.java
+/Users/volodymyr/Downloads/technical_task-main/src/main/java/technikal/task/fishmarket/models/ProductDto.java
+/Users/volodymyr/Downloads/technical_task-main/src/main/java/technikal/task/fishmarket/models/ProductImage.java
+/Users/volodymyr/Downloads/technical_task-main/src/main/java/technikal/task/fishmarket/services/FishRepository.java
+/Users/volodymyr/Downloads/technical_task-main/src/main/java/technikal/task/fishmarket/services/ProductImageRepository.java
+/Users/volodymyr/Downloads/technical_task-main/src/main/java/technikal/task/fishmarket/services/ProductRepository.java
+/Users/volodymyr/Downloads/technical_task-main/src/main/java/technikal/task/fishmarket/services/ProductService.java

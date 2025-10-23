@@ -1,0 +1,13 @@
+technikal/task/fishmarket/controllers/ProductController.class
+technikal/task/fishmarket/models/ProductImage.class
+technikal/task/fishmarket/models/FishImage.class
+technikal/task/fishmarket/models/Product.class
+technikal/task/fishmarket/controllers/FishController.class
+technikal/task/fishmarket/models/ProductDto.class
+technikal/task/fishmarket/services/ProductRepository.class
+technikal/task/fishmarket/services/ProductImageRepository.class
+technikal/task/fishmarket/services/ProductService.class
+technikal/task/fishmarket/services/FishRepository.class
+technikal/task/fishmarket/FishmarketApplication.class
+technikal/task/fishmarket/models/Fish.class
+technikal/task/fishmarket/models/FishDto.class
