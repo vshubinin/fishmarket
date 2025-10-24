@@ -25,17 +25,6 @@ public class Fish {
 	private double price;
 	private Date catchDate;
 
-	public List<FishImage> getFishImage() {
-		return fishImage;
-	}
-
-	public void setFishImage(List<FishImage> fishImage) {
-		this.fishImage = fishImage;
-	}
-
-	@OneToMany(mappedBy = "fish", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<FishImage> fishImage;
-
 	public List<FishImage> getImages() {
 		return images;
 	}
