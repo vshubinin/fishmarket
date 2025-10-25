@@ -46,13 +46,9 @@
             <td th:text="${fish.name}"></td>
             <td th:text="${fish.price} + '₴'"></td>
             <td th:text="${fish.catchDate.toString().substring(0,10)}"></td>
-            <div th:each="fish : ${fishlist}">
-            <td class="gallery">
-               <img  th:each="img : ${fish.images}"
-                     th:src="@{'/images/' + ${img.fileName}}"
-                     width="100" alt="Фото риби">
+            <td>
+              <a class="btn btn-success" th:href="@{'/fish/' + ${fish.id}}" onclick="return confirm('Подивитися?')">Фото</a>
             </td>
-            </div>
             <td>
               <a class="btn btn-danger btn-sm" th:href="@{/fish/delete(id=${fish.id})}" onclick="return confirm('Ви впевнені?')">Прибрати</a>
             </td>

@@ -40,7 +40,7 @@ public class Fish {
 
 	public void addImage(FishImage image) {
 		image.setFish(this);
-		images.add(image);
+		this.images.add(image);
 	}
 	
 	public int getId() {

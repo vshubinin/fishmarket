@@ -17,8 +17,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,28 +29,34 @@ import technikal.task.fishmarket.models.FishImage;
 import technikal.task.fishmarket.services.FishRepository;
 
 @Controller
-@RequestMapping("/fish")
 public class FishController {
 	
 	@Autowired
 	private FishRepository repo;
 	
-	@GetMapping({"", "/"})
+	@GetMapping("/fish")
 	public String showFishList(Model model) {
 		List<Fish> fishlist = repo.findAll(Sort.by(Sort.Direction.DESC, "id"));
 		model.addAttribute("fishlist", fishlist);
 		return "index";
 	}
+
+	@GetMapping("/fish/{id}")
+	public String viewFish(@PathVariable Long id, Model model) {
+		Fish fish = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Невірний ID риби: " + id));
+		model.addAttribute("fish", fish);
+		return "viewFish";
+	}
 	
-	@GetMapping("/create")
+	@GetMapping("/fish/create")
 	public String showCreatePage(Model model) {
 		FishDto fishDto = new FishDto();
 		model.addAttribute("fishDto", fishDto);
 		return "createFish";
 	}
 	
-	@GetMapping("/delete")
-	public String deleteFish(@RequestParam int id) {
+	@GetMapping("/fish/delete")
+	public String deleteFish(@RequestParam long id) {
 		
 		try {
 			
@@ -66,50 +72,57 @@ public class FishController {
 		
 		return "redirect:/fish";
 	}
-	
-	@PostMapping("/create")
+
+	@PostMapping("/fish/create")
 	public String addFish(@Valid @ModelAttribute FishDto fishDto, BindingResult result) {
-		
-		if(fishDto.getImageFile().isEmpty()) {
+
+		if (fishDto.getImageFile() == null || fishDto.getImageFile().isEmpty()) {
 			result.addError(new FieldError("fishDto", "imageFile", "Потрібне фото рибки"));
 		}
-		
-		if(result.hasErrors()) {
+
+		if (result.hasErrors()) {
 			return "createFish";
 		}
-		
-		List<MultipartFile> image = fishDto.getImageFile();
-		Date catchDate = new Date();
-		String  storageFileName = catchDate.getTime() + "_" + image.get(0).getOriginalFilename();
-		
-		try {
-			String uploadDir = "public/images/";
-			Path uploadPath = Paths.get(uploadDir);
-			
-			if(!Files.exists(uploadPath)) {
-				Files.createDirectories(uploadPath);
-			}
-			
-			try(InputStream inputStream = image.get(0).getInputStream()){
-				Files.copy(inputStream, Paths.get(uploadDir+storageFileName), StandardCopyOption.REPLACE_EXISTING);
-			}
-			
-		}catch(Exception ex) {
-			System.out.println("Exception: " + ex.getMessage());
-		}
-		
-		Fish fish = new Fish();
 
-		FishImage img = new FishImage();
-		img.setFileName(storageFileName);
-		fish.addImage(img);
-		
-		fish.setCatchDate(catchDate);
+		// Создаём сущность рыбы
+		Fish fish = new Fish();
+		fish.setCatchDate(new Date());
 		fish.setName(fishDto.getName());
 		fish.setPrice(fishDto.getPrice());
-		
+
+		String uploadDir = "public/images/";
+		Path uploadPath = Paths.get(uploadDir);
+
+		try {
+			if (!Files.exists(uploadPath)) {
+				Files.createDirectories(uploadPath);
+			}
+
+			// 🔁 Перебор всех файлов
+			for (MultipartFile file : fishDto.getImageFile()) {
+				if (file.isEmpty()) continue;
+
+				String storageFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+
+				try (InputStream inputStream = file.getInputStream()) {
+					Files.copy(inputStream, uploadPath.resolve(storageFileName), StandardCopyOption.REPLACE_EXISTING);
+				}
+
+				// Создаём объект FishImage и добавляем в рыбу
+				FishImage img = new FishImage();
+				img.setFileName(storageFileName);
+				img.setFish(fish); // важно связать обратно
+
+				fish.addImage(img);
+			}
+
+		} catch (Exception ex) {
+			System.out.println("Exception: " + ex.getMessage());
+		}
+
+		// 💾 Сохраняем рыбу вместе с изображениями
 		repo.save(fish);
-		
+
 		return "redirect:/fish";
 	}
 

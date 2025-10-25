@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${fish.name}"></title>
+</head>
+<body>
+<h1 th:text="${fish.name}"></h1>
+<p>Ціна: <span th:text="${fish.price}"></span> грн</p>
+<p>Дата вилову: <span th:text="${#dates.format(fish.catchDate, 'dd.MM.yyyy')}"></span></p>
+
+<h3>Фото:</h3>
+<div class="gallery">
+    <img th:each="img : ${fish.images}"
+         th:src="@{'/images/' + ${img.fileName}}"
+         width="150"
+         alt="Фото риби">
+</div>
+
+<a href="/fish">Назад</a>
+</body>
+</html>
