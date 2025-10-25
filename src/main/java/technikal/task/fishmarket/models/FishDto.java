@@ -1,5 +1,6 @@
 package technikal.task.fishmarket.models;
 
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.constraints.Min;
@@ -11,7 +12,7 @@ import java.util.List;
 public class FishDto {
 	
 
-	@NotEmpty(message = "потрібна назва рибки")
+	@NotBlank
 	private String name;
 	@Min(0)
 	private double price;
