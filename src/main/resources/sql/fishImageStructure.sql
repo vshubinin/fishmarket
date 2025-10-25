@@ -1,6 +1,6 @@
 CREATE TABLE fish_image (
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
-file_name VARCHAR(255),
+fileName VARCHAR(255),
 fish_id BIGINT,
 CONSTRAINT fk_fish FOREIGN KEY (fish_id) REFERENCES fish(id) ON DELETE CASCADE
 );
