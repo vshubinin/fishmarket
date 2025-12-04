@@ -22,11 +22,11 @@ public class FishImage {
         this.fileName = fileName;
     }
 
-    public Fish getFish() {
+    public Product getFish() {
         return fish;
     }
 
-    public void setFish(Fish fish) {
+    public void setFish(Product fish) {
         this.fish = fish;
     }
 
@@ -34,5 +34,5 @@ public class FishImage {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fish_id")
-    private Fish fish;
+    private Product fish;
 }

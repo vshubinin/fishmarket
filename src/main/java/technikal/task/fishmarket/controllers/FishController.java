@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
-import technikal.task.fishmarket.models.Fish;
+import technikal.task.fishmarket.models.Product;
 import technikal.task.fishmarket.models.FishDto;
 import technikal.task.fishmarket.models.FishImage;
 import technikal.task.fishmarket.services.FishRepository;
@@ -36,14 +36,14 @@ public class FishController {
 	
 	@GetMapping("/fish")
 	public String showFishList(Model model) {
-		List<Fish> fishlist = repo.findAll(Sort.by(Sort.Direction.DESC, "id"));
+		List<Product> fishlist = repo.findAll(Sort.by(Sort.Direction.DESC, "id"));
 		model.addAttribute("fishlist", fishlist);
 		return "index";
 	}
 
 	@GetMapping("/fish/{id}")
 	public String viewFish(@PathVariable Long id, Model model) {
-		Fish fish = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Невірний ID риби: " + id));
+		Product fish = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Невірний ID риби: " + id));
 		model.addAttribute("fish", fish);
 		return "viewFish";
 	}
@@ -60,7 +60,7 @@ public class FishController {
 		
 		try {
 			
-			Fish fish = repo.findById(id).get();
+			Product fish = repo.findById(id).get();
 			
 			Path imagePath = Paths.get("public/images/"+fish.getImages().get(0).getFileName());
 			Files.delete(imagePath);
@@ -85,7 +85,7 @@ public class FishController {
 		}
 
 		// Создаём сущность рыбы
-		Fish fish = new Fish();
+		Product fish = new Product();
 		fish.setCatchDate(new Date());
 		fish.setName(fishDto.getName());
 		fish.setPrice(fishDto.getPrice());
