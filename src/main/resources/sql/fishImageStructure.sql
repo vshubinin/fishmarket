@@ -1,4 +1,4 @@
-CREATE TABLE fish_image (
+CREATE TABLE product_image (
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
 fileName VARCHAR(255),
 fish_id BIGINT,
