@@ -83,6 +83,10 @@ public class FishController {
     @PostMapping("/fish/create")
     public String addFish(@Valid @ModelAttribute ProductDto productDto, BindingResult result) {
 
+        if(productDto.getImageFile().isEmpty()) {
+            result.addError(new FieldError("fishDto", "imageFile", "Потрібне фото рибки"));
+        }
+
         if (result.hasErrors()) {
             return "createFish";
         }
@@ -103,10 +107,7 @@ public class FishController {
 
             // 🔁 Перебор всех файлов
             for (MultipartFile file : productDto.getImageFile()) {
-                if (file.getOriginalFilename().isEmpty()) {
-                    continue;
-                }
-
+                if (file.isEmpty()) continue;
                 String storageFileName = System.currentTimeMillis() + "_" + file.getName();
 
                 try (InputStream inputStream = file.getInputStream()) {
@@ -125,12 +126,8 @@ public class FishController {
             System.out.println("Exception: " + ex.getMessage());
         }
 
-        if (product.getImages().size() != 0) {
-            // 💾 Сохраняем рыбу вместе с изображениями
-            repo.save(product);
-        } else {
-			result.addError(new FieldError("ProductDto", "imageFile", "Потрібне фото рибки"));
-        }
+        // 💾 Сохраняем рыбу вместе с изображениями
+        repo.save(product);
 
         return "redirect:/fish";
     }
