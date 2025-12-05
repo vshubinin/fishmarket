@@ -13,7 +13,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "fish")
+@Table(name = "product")
 public class Product {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -23,20 +23,20 @@ public class Product {
 	private double price;
 	private Date catchDate;
 
-	public List<FishImage> getImages() {
+	public List<ProductImage> getImages() {
 		return images;
 	}
 
-	public void setImages(List<FishImage> images) {
+	public void setImages(List<ProductImage> images) {
 		this.images = images;
 	}
 
 
 	// Теперь список фото
 	@OneToMany(mappedBy = "fish", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<FishImage> images = new ArrayList<>();
+	private List<ProductImage> images = new ArrayList<>();
 
-	public void addImage(FishImage image) {
+	public void addImage(ProductImage image) {
 		image.setFish(this);
 		this.images.add(image);
 	}

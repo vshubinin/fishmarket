@@ -4,12 +4,11 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
 
 import java.util.Date;
 import java.util.List;
 
-public class FishDto {
+public class ProductDto {
 	
 
 	@NotBlank

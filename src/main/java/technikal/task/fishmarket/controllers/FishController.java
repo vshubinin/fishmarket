@@ -24,106 +24,115 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 import technikal.task.fishmarket.models.Product;
-import technikal.task.fishmarket.models.FishDto;
-import technikal.task.fishmarket.models.FishImage;
+import technikal.task.fishmarket.models.ProductDto;
+import technikal.task.fishmarket.models.ProductImage;
 import technikal.task.fishmarket.services.FishRepository;
 
 @Controller
 public class FishController {
-	
-	@Autowired
-	private FishRepository repo;
-	
-	@GetMapping("/fish")
-	public String showFishList(Model model) {
-		List<Product> fishlist = repo.findAll(Sort.by(Sort.Direction.DESC, "id"));
-		model.addAttribute("fishlist", fishlist);
-		return "index";
-	}
 
-	@GetMapping("/fish/{id}")
-	public String viewFish(@PathVariable Long id, Model model) {
-		Product fish = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Невірний ID риби: " + id));
-		model.addAttribute("fish", fish);
-		return "viewFish";
-	}
-	
-	@GetMapping("/fish/create")
-	public String showCreatePage(Model model) {
-		FishDto fishDto = new FishDto();
-		model.addAttribute("fishDto", fishDto);
-		return "createFish";
-	}
-	
-	@GetMapping("/fish/delete")
-	public String deleteFish(@RequestParam long id) {
-		
-		try {
-			
-			Product fish = repo.findById(id).get();
-			
-			Path imagePath = Paths.get("public/images/"+fish.getImages().get(0).getFileName());
-			Files.delete(imagePath);
-			repo.delete(fish);
-			
-		}catch(Exception ex) {
-			System.out.println("Exception: " + ex.getMessage());
-		}
-		
-		return "redirect:/fish";
-	}
+    @Autowired
+    private FishRepository repo;
 
-	@PostMapping("/fish/create")
-	public String addFish(@Valid @ModelAttribute FishDto fishDto, BindingResult result) {
+    @GetMapping("/")
+    public String home(Model model) {
+        List<Product> fishlist = repo.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        model.addAttribute("fishlist", fishlist);
+        return "index";
+    }
 
-		if (fishDto.getImageFile() == null || fishDto.getImageFile().isEmpty()) {
-			result.addError(new FieldError("fishDto", "imageFile", "Потрібне фото рибки"));
-		}
+    @GetMapping("/fish")
+    public String showFishList(Model model) {
+        List<Product> fishlist = repo.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        model.addAttribute("fishlist", fishlist);
+        return "index";
+    }
 
-		if (result.hasErrors()) {
-			return "createFish";
-		}
+    @GetMapping("/fish/{id}")
+    public String viewFish(@PathVariable Long id, Model model) {
+        Product fish = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Невірний ID риби: " + id));
+        model.addAttribute("fish", fish);
+        return "viewFish";
+    }
 
-		// Создаём сущность рыбы
-		Product fish = new Product();
-		fish.setCatchDate(new Date());
-		fish.setName(fishDto.getName());
-		fish.setPrice(fishDto.getPrice());
+    @GetMapping("/fish/create")
+    public String showCreatePage(Model model) {
+        ProductDto fishDto = new ProductDto();
+        model.addAttribute("fishDto", fishDto);
+        return "createFish";
+    }
 
-		String uploadDir = "public/images/";
-		Path uploadPath = Paths.get(uploadDir);
+    @GetMapping("/fish/delete")
+    public String deleteFish(@RequestParam long id) {
 
-		try {
-			if (!Files.exists(uploadPath)) {
-				Files.createDirectories(uploadPath);
-			}
+        try {
 
-			// 🔁 Перебор всех файлов
-			for (MultipartFile file : fishDto.getImageFile()) {
-				if (file.isEmpty()) continue;
+            Product product = repo.findById(id).get();
 
-				String storageFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            Path imagePath = Paths.get("public/images/" + product.getImages().get(0).getFileName());
+            Files.delete(imagePath);
+            repo.delete(product);
 
-				try (InputStream inputStream = file.getInputStream()) {
-					Files.copy(inputStream, uploadPath.resolve(storageFileName), StandardCopyOption.REPLACE_EXISTING);
-				}
+        } catch (Exception ex) {
+            System.out.println("Exception: " + ex.getMessage());
+        }
 
-				// Создаём объект FishImage и добавляем в рыбу
-				FishImage img = new FishImage();
-				img.setFileName(storageFileName);
-				img.setFish(fish); // важно связать обратно
+        return "redirect:/fish";
+    }
 
-				fish.addImage(img);
-			}
+    @PostMapping("/fish/create")
+    public String addFish(@Valid @ModelAttribute ProductDto productDto, BindingResult result) {
 
-		} catch (Exception ex) {
-			System.out.println("Exception: " + ex.getMessage());
-		}
+        if (result.hasErrors()) {
+            return "createFish";
+        }
 
-		// 💾 Сохраняем рыбу вместе с изображениями
-		repo.save(fish);
+        // Создаём сущность рыбы
+        Product product = new Product();
+        product.setCatchDate(new Date());
+        product.setName(productDto.getName());
+        product.setPrice(productDto.getPrice());
 
-		return "redirect:/fish";
-	}
+        String uploadDir = "public/images/";
+        Path uploadPath = Paths.get(uploadDir);
+
+        try {
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            // 🔁 Перебор всех файлов
+            for (MultipartFile file : productDto.getImageFile()) {
+                if (file.getOriginalFilename().isEmpty()) {
+                    continue;
+                }
+
+                String storageFileName = System.currentTimeMillis() + "_" + file.getName();
+
+                try (InputStream inputStream = file.getInputStream()) {
+                    Files.copy(inputStream, uploadPath.resolve(storageFileName), StandardCopyOption.REPLACE_EXISTING);
+                }
+
+                // Создаём объект ProductImage и добавляем в рыбу
+                ProductImage img = new ProductImage();
+                img.setFileName(storageFileName);
+                img.setFish(product); // важно связать обратно
+
+                product.addImage(img);
+            }
+
+        } catch (Exception ex) {
+            System.out.println("Exception: " + ex.getMessage());
+        }
+
+        if (product.getImages().size() != 0) {
+            // 💾 Сохраняем рыбу вместе с изображениями
+            repo.save(product);
+        } else {
+			result.addError(new FieldError("ProductDto", "imageFile", "Потрібне фото рибки"));
+        }
+
+        return "redirect:/fish";
+    }
 
 }
