@@ -26,13 +26,13 @@ import jakarta.validation.Valid;
 import technikal.task.fishmarket.models.Product;
 import technikal.task.fishmarket.models.ProductDto;
 import technikal.task.fishmarket.models.ProductImage;
-import technikal.task.fishmarket.services.FishRepository;
+import technikal.task.fishmarket.services.ProductRepository;
 
 @Controller
 public class FishController {
 
     @Autowired
-    private FishRepository repo;
+    private ProductRepository repo;
 
     @GetMapping("/")
     public String home(Model model) {
