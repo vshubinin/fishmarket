@@ -68,8 +68,6 @@ public class FishController {
         try {
             Path imagePath = Paths.get("public/images/" + product.getImages().get(0).getFileName());
             Files.delete(imagePath);
-            repo.delete(product);
-
         } catch (Exception ex) {
             System.out.println("Exception: " + ex.getMessage());
         } finally {
