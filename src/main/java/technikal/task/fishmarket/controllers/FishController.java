@@ -64,17 +64,16 @@ public class FishController {
 
     @GetMapping("/fish/delete")
     public String deleteFish(@RequestParam long id) {
-
+        Product product = repo.findById(id).get();
         try {
-
-            Product product = repo.findById(id).get();
-
             Path imagePath = Paths.get("public/images/" + product.getImages().get(0).getFileName());
             Files.delete(imagePath);
             repo.delete(product);
 
         } catch (Exception ex) {
             System.out.println("Exception: " + ex.getMessage());
+        } finally {
+            repo.delete(product);
         }
 
         return "redirect:/fish";
@@ -83,7 +82,7 @@ public class FishController {
     @PostMapping("/fish/create")
     public String addFish(@Valid @ModelAttribute ProductDto productDto, BindingResult result) {
 
-        if(productDto.getImageFile().isEmpty()) {
+        if (productDto.getImageFile().isEmpty()) {
             result.addError(new FieldError("fishDto", "imageFile", "Потрібне фото рибки"));
         }
 
