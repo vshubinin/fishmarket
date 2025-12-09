@@ -105,20 +105,24 @@ public class FishController {
             // 🔁 Перебор всех файлов
             for (MultipartFile file : productDto.getImageFile()) {
                 if (file.isEmpty()) continue;
-                String storageFileName = System.currentTimeMillis() + "_" + file.getName();
+
+                String originalName = file.getOriginalFilename();
+                String storageFileName = System.currentTimeMillis() + "_" + originalName;
 
                 try (InputStream inputStream = file.getInputStream()) {
-                    Files.copy(inputStream, uploadPath.resolve(storageFileName), StandardCopyOption.REPLACE_EXISTING);
+                    Files.copy(
+                            inputStream,
+                            uploadPath.resolve(storageFileName),
+                            StandardCopyOption.REPLACE_EXISTING
+                    );
                 }
 
-                // Создаём объект ProductImage и добавляем в рыбу
                 ProductImage img = new ProductImage();
                 img.setFileName(storageFileName);
-                img.setFish(product); // важно связать обратно
+                img.setFish(product);
 
                 product.addImage(img);
             }
-
         } catch (Exception ex) {
             System.out.println("Exception: " + ex.getMessage());
         }
