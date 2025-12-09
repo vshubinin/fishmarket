@@ -81,7 +81,7 @@ public class FishController {
     public String addFish(@Valid @ModelAttribute ProductDto productDto, BindingResult result) {
 
         if (productDto.getImageFile().isEmpty()) {
-            result.addError(new FieldError("fishDto", "imageFile", "Потрібне фото рибки"));
+            result.addError(new FieldError("productDto", "imageFile", "Потрібне фото рибки"));
         }
 
         if (result.hasErrors()) {
