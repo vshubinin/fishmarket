@@ -1,0 +1,12 @@
+/Users/vladimir/Public/fishmarket/src/main/java/technikal/task/fishmarket/FishmarketApplication.java
+/Users/vladimir/Public/fishmarket/src/main/java/technikal/task/fishmarket/config/DataInitializer.java
+/Users/vladimir/Public/fishmarket/src/main/java/technikal/task/fishmarket/config/SecurityConfig.java
+/Users/vladimir/Public/fishmarket/src/main/java/technikal/task/fishmarket/controllers/FishController.java
+/Users/vladimir/Public/fishmarket/src/main/java/technikal/task/fishmarket/controllers/UserController.java
+/Users/vladimir/Public/fishmarket/src/main/java/technikal/task/fishmarket/models/Product.java
+/Users/vladimir/Public/fishmarket/src/main/java/technikal/task/fishmarket/models/ProductDto.java
+/Users/vladimir/Public/fishmarket/src/main/java/technikal/task/fishmarket/models/ProductImage.java
+/Users/vladimir/Public/fishmarket/src/main/java/technikal/task/fishmarket/models/UserEntity.java
+/Users/vladimir/Public/fishmarket/src/main/java/technikal/task/fishmarket/services/CustomUserDetailsService.java
+/Users/vladimir/Public/fishmarket/src/main/java/technikal/task/fishmarket/services/ProductRepository.java
+/Users/vladimir/Public/fishmarket/src/main/java/technikal/task/fishmarket/services/UserRepository.java
