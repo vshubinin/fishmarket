@@ -37,9 +37,7 @@
             <th>Товар</th>
             <th>Ціна</th>
             <th>Дата вилову</th>
-            <div sec:authorize="hasRole('ADMIN')">
-                <th>Фото</th>
-            </div>
+            <th sec:authorize="hasRole('ADMIN')">Фото</th>
             <th></th>
         </tr>
         </thead>
@@ -49,21 +47,23 @@
             <td th:text="${fish.name}"></td>
             <td th:text="${fish.price} + '₴'"></td>
             <td th:text="${fish.catchDate.toString().substring(0,10)}"></td>
-            <div sec:authorize="hasRole('ADMIN')">
-                <td>
+            <td>
+                <div sec:authorize="hasRole('ADMIN')">
                     <div class="slider-container">
                         <img th:each="img : ${fish.images}"
                              th:src="@{'/images/' + ${img.fileName}}"
                              width="150"
                              alt="Фото риби">
                     </div>
-                </td>
-            <div sec:authorize="hasRole('ADMIN')">
-                <td>
+                </div>
+            </td>
+            <td>
+                <div sec:authorize="hasRole('ADMIN')">
                     <a class="btn btn-danger btn-sm" th:href="@{/fish/delete(id=${fish.id})}"
                        onclick="return confirm('Ви впевнені?')">Прибрати</a>
-                </td>
-            </div>
+                    <a class="btn btn-secondary btn-sm ms-2" th:href="@{/fish/edit(id=${fish.id})}">Редагувати</a>
+                </div>
+            </td>
         </tr>
         </tbody>
     </table>
