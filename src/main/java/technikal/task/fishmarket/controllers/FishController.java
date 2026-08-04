@@ -139,39 +139,6 @@ public class FishController {
         product.setName(productDto.getName());
         product.setPrice(productDto.getPrice());
 
-        String uploadDir = "public/images/";
-        Path uploadPath = Paths.get(uploadDir);
-
-        try {
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-
-            // 🔁 Перебор всех файлов
-            for (MultipartFile file : productDto.getImageFile()) {
-                if (file.isEmpty()) continue;
-
-                String originalName = file.getOriginalFilename();
-                String storageFileName = System.currentTimeMillis() + "_" + originalName;
-
-                try (InputStream inputStream = file.getInputStream()) {
-                    Files.copy(
-                            inputStream,
-                            uploadPath.resolve(storageFileName),
-                            StandardCopyOption.REPLACE_EXISTING
-                    );
-                }
-
-                ProductImage img = new ProductImage();
-                img.setFileName(storageFileName);
-                img.setFish(product);
-
-                product.addImage(img);
-            }
-        } catch (Exception ex) {
-            System.out.println("Exception: " + ex.getMessage());
-        }
-
         // 💾 Сохраняем рыбу вместе с изображениями
         saveImages(product, productDto.getImageFile());
         repo.save(product);
