@@ -53,10 +53,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                        .anyRequest().authenticated()
+                        .requestMatchers("/", "/index", "/login", "/logout", "/resources/**", "/static/**", "/images/**", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                .anyRequest().authenticated()
                 )
+                .anonymous(a -> a.authorities("ROLE_GUEST"))
                 .formLogin()
                 .and()
                 .logout()

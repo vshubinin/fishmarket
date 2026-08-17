@@ -6,6 +6,9 @@
 # Maven
 target/
 
+#images
+public/
+
 # Logs
 *.log
 

@@ -10,8 +10,6 @@ import technikal.task.fishmarket.services.UserRepository;
 
 import java.util.List;
 
-import org.mockito.ArgumentCaptor;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;

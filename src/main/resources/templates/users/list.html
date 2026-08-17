@@ -11,11 +11,15 @@
         <th>ID</th>
         <th>Имя</th>
         <th>Роль</th>
+        <th>Действия</th>
     </tr>
     <tr th:each="user : ${users}">
         <td th:text="${user.id}"></td>
         <td th:text="${user.username}"></td>
         <td th:text="${user.role}"></td>
+        <td>
+            <a th:href="@{/admin/users/{id}/edit(id=${user.id})}">Редактировать</a>
+        </td>
     </tr>
 </table>
 </body>
